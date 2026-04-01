@@ -1,11 +1,13 @@
 package edu.hei.school.ingredients.service;
 
 import edu.hei.school.ingredients.entity.Ingredient;
+import edu.hei.school.ingredients.exception.NotFoundException;
 import edu.hei.school.ingredients.repository.IngredientRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IngredientService {
@@ -17,5 +19,13 @@ public class IngredientService {
 
     public List<Ingredient> findAll(){
         return ingredientRepository.findAll();
+    }
+
+    public Ingredient getById(Integer id) {
+        Optional<Ingredient> optionalIngredient = ingredientRepository.findById(id);
+        if (optionalIngredient.isEmpty()) {
+            throw new NotFoundException("Ingredient.id="+id+" is not found");
+        }
+        return optionalIngredient.get();
     }
 }
