@@ -2,6 +2,8 @@ package edu.hei.school.ingredients.controller;
 
 import edu.hei.school.ingredients.dto.DishIngredientRest;
 import edu.hei.school.ingredients.dto.DishRest;
+import edu.hei.school.ingredients.exception.BadRequestException;
+import edu.hei.school.ingredients.exception.NotFoundException;
 import edu.hei.school.ingredients.service.DishService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,12 @@ public class DishController {
                                             }).toList()
                             ))
                             .toList());
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
